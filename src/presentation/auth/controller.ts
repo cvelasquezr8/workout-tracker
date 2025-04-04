@@ -25,12 +25,14 @@ export class AuthController {
 	};
 
 	registerUser = async (req: Request, res: Response): Promise<any> => {
+		const startTime = Date.now();
 		const [error, userRegisterDto] = RegisterUserDto.create(req.body);
 		if (error) {
 			return HttpResponse.error({
 				res,
 				message: error,
 				statusCode: 400,
+				startTime,
 			});
 		}
 
@@ -43,6 +45,7 @@ export class AuthController {
 					statusCode: 201,
 					message: `User registered successfully`,
 					data: { user, token },
+					startTime,
 				});
 			})
 			.catch((error) => this.handleError(error, res));
