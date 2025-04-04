@@ -1,0 +1,45 @@
+{
+	"name": "workout-tracker",
+	"version": "1.0.0",
+	"description": "This project involves creating a backend system for a workout tracker application where users can sign up, log in, create workout plans, and track their progress. The system will feature JWT authentication, CRUD operations for workouts, and generate reports on past workouts.",
+	"main": "index.js",
+	"scripts": {
+		"dev": "tsnd --respawn --clear src/app.ts",
+		"build": "rimraf ./dist && tsc",
+		"start": "npm run build && node dist/app.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/cvelasquezr8/workout-tracker.git"
+	},
+	"keywords": [
+		"roadmap",
+		"workout-tracker",
+		"nodejs",
+		"postgres",
+		"typescrypt",
+		"jwt",
+		"testing",
+		"openAPI",
+		"Swagger"
+	],
+	"author": "Carlos Velasquez",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cvelasquezr8/workout-tracker/issues"
+	},
+	"homepage": "https://github.com/cvelasquezr8/workout-tracker#readme",
+	"dependencies": {
+		"@prisma/client": "^6.5.0",
+		"dotenv": "^16.4.7",
+		"env-var": "^7.5.0",
+		"express": "^5.1.0"
+	},
+	"devDependencies": {
+		"@types/express": "^5.0.1",
+		"@types/node": "^22.14.0",
+		"rimraf": "^6.0.1",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.8.2"
+	}
+}

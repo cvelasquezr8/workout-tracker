@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id             String           @id @default(uuid()) @db.Uuid
+  email          String           @unique
+  password       String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  workouts       Workout[]
+  progress       Progress[]
+  refreshTokens  RefreshToken[]
+}
+
+model Exercise {
+  id              String           @id @default(uuid()) @db.Uuid
+  name            String
+  description     String?
+  category        String?
+  createdAt       DateTime         @default(now())
+  workoutExercises WorkoutExercise[]
+}
+
+model Workout {
+  id                String           @id @default(uuid()) @db.Uuid
+  name              String
+  description       String?
+  scheduledAt       DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  userId            String           @db.Uuid
+  user              User             @relation(fields: [userId], references: [id])
+  workoutExercises  WorkoutExercise[]
+  progress          Progress[]
+}
+
+model WorkoutExercise {
+  id          String    @id @default(uuid()) @db.Uuid
+  workoutId   String    @db.Uuid
+  exerciseId  String    @db.Uuid
+  sets        Int
+  repetitions Int
+  weight      Float
+  workout     Workout   @relation(fields: [workoutId], references: [id])
+  exercise    Exercise  @relation(fields: [exerciseId], references: [id])
+  @@unique([workoutId, exerciseId])
+}
+
+model Progress {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  workoutId  String    @db.Uuid
+  date       DateTime  @default(now())
+  notes      String?
+  user       User      @relation(fields: [userId], references: [id])
+  workout    Workout   @relation(fields: [workoutId], references: [id])
+}
+
+model RefreshToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  token      String    @unique
+  userId     String    @db.Uuid
+  expiresAt  DateTime
+  revoked    Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id])
+}
